@@ -1,0 +1,16 @@
+Image,Method,Kernel_Size,Threshold_Low,Threshold_High,Notes,Output_File
+cameraman,Sobel,3,N/A,N/A,"Magnitude-based, kernel=3x3",cameraman_sobel_k3.png
+cameraman,Sobel,5,N/A,N/A,"Magnitude-based, kernel=5x5",cameraman_sobel_k5.png
+cameraman,Canny,5x5 (Gaussian pre-blur),50,150,Edge pixels: 7517 (2.87%),cameraman_canny_t50_150.png
+cameraman,Canny,5x5 (Gaussian pre-blur),100,200,Edge pixels: 6038 (2.30%),cameraman_canny_t100_200.png
+cameraman,Canny,5x5 (Gaussian pre-blur),150,250,Edge pixels: 4966 (1.89%),cameraman_canny_t150_250.png
+coins,Sobel,3,N/A,N/A,"Magnitude-based, kernel=3x3",coins_sobel_k3.png
+coins,Sobel,5,N/A,N/A,"Magnitude-based, kernel=5x5",coins_sobel_k5.png
+coins,Canny,5x5 (Gaussian pre-blur),50,150,Edge pixels: 7054 (6.06%),coins_canny_t50_150.png
+coins,Canny,5x5 (Gaussian pre-blur),100,200,Edge pixels: 4582 (3.94%),coins_canny_t100_200.png
+coins,Canny,5x5 (Gaussian pre-blur),150,250,Edge pixels: 3954 (3.40%),coins_canny_t150_250.png
+checkerboard,Sobel,3,N/A,N/A,"Magnitude-based, kernel=3x3",checkerboard_sobel_k3.png
+checkerboard,Sobel,5,N/A,N/A,"Magnitude-based, kernel=5x5",checkerboard_sobel_k5.png
+checkerboard,Canny,5x5 (Gaussian pre-blur),50,150,Edge pixels: 2604 (6.51%),checkerboard_canny_t50_150.png
+checkerboard,Canny,5x5 (Gaussian pre-blur),100,200,Edge pixels: 2604 (6.51%),checkerboard_canny_t100_200.png
+checkerboard,Canny,5x5 (Gaussian pre-blur),150,250,Edge pixels: 2604 (6.51%),checkerboard_canny_t150_250.png

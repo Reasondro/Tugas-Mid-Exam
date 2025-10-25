@@ -1,0 +1,13 @@
+Image,Method,Block_Size,Ksize,K_Parameter,Threshold_Percent,Threshold_Value,Feature_Count,Mean_Response,Max_Response,Min_Response
+cameraman,Harris,2,3,0.04,0.01,1235647.6,4199,7207999.5,123564770.0,1236933.4
+cameraman,Harris (threshold test),2,3,0.04,0.01,-,4199,-,-,-
+cameraman,Harris (threshold test),2,3,0.04,0.05,-,1194,-,-,-
+cameraman,Harris (threshold test),2,3,0.04,0.1,-,596,-,-,-
+coins,Harris,2,3,0.04,0.01,473442.9,7144,2170549.2,47344292.0,473819.88
+coins,Harris (threshold test),2,3,0.04,0.01,-,7144,-,-,-
+coins,Harris (threshold test),2,3,0.04,0.05,-,1573,-,-,-
+coins,Harris (threshold test),2,3,0.04,0.1,-,669,-,-,-
+checkerboard,Harris,2,3,0.04,0.01,871103.7,1225,87110370.0,87110370.0,87110370.0
+checkerboard,Harris (threshold test),2,3,0.04,0.01,-,1225,-,-,-
+checkerboard,Harris (threshold test),2,3,0.04,0.05,-,1225,-,-,-
+checkerboard,Harris (threshold test),2,3,0.04,0.1,-,1225,-,-,-
