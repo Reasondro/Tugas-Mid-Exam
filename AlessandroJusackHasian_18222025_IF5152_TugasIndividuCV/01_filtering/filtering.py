@@ -2,10 +2,8 @@
 # NIM: 18222025
 # Fitur unik: Automatic parameter comparison with multiple filter sizes and visualization
 
-"""
-Module 1: Image Filtering
-Implements Gaussian and Median filters with parameter analysis
-"""
+# Module 1: Image Filtering
+# Gaussian and Median filters
 
 import cv2
 import numpy as np
@@ -14,39 +12,20 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-# Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
 from utils import load_test_images, save_image, create_comparison_plot
 
 class ImageFilter:
-    """
-    Image filtering class implementing Gaussian and Median filters
-    """
+    # Image filtering with Gaussian and Median
 
     def __init__(self, output_dir="outputs"):
-        """
-        Initialize ImageFilter
-
-        Args:
-            output_dir (str): Directory to save outputs
-        """
         self.output_dir = Path(__file__).parent / output_dir
         self.output_dir.mkdir(exist_ok=True)
         self.parameters = []
 
     def apply_gaussian_filter(self, image, image_name, sigma_values=[1, 3, 5]):
-        """
-        Apply Gaussian filter with multiple sigma values
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            sigma_values (list): List of sigma values to test
-
-        Returns:
-            list: List of filtered images
-        """
-        print(f"\n📌 Applying Gaussian filter on {image_name}...")
+        # Apply Gaussian with different sigmas
+        print(f"\nApplying Gaussian filter on {image_name}...")
         results = []
 
         # Ensure image is grayscale for consistent processing
@@ -79,23 +58,13 @@ class ImageFilter:
             })
 
             results.append(filtered)
-            print(f"  ✓ Gaussian filter (σ={sigma}, kernel={ksize}x{ksize}) applied")
+            print(f"   Gaussian filter (σ={sigma}, kernel={ksize}x{ksize}) applied")
 
         return results
 
     def apply_median_filter(self, image, image_name, kernel_sizes=[3, 5, 7]):
-        """
-        Apply Median filter with multiple kernel sizes
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            kernel_sizes (list): List of kernel sizes to test
-
-        Returns:
-            list: List of filtered images
-        """
-        print(f"\n📌 Applying Median filter on {image_name}...")
+        
+        print(f"\n Applying Median filter on {image_name}...")
         results = []
 
         # Ensure image is grayscale
@@ -123,21 +92,12 @@ class ImageFilter:
             })
 
             results.append(filtered)
-            print(f"  ✓ Median filter (kernel={ksize}x{ksize}) applied")
+            print(f"   Median filter (kernel={ksize}x{ksize}) applied")
 
         return results
 
     def create_visualization(self, original, filtered_images, titles, image_name, filter_type):
-        """
-        Create visualization comparing original and filtered images
-
-        Args:
-            original (numpy.ndarray): Original image
-            filtered_images (list): List of filtered images
-            titles (list): List of titles for each subplot
-            image_name (str): Name of the image
-            filter_type (str): Type of filter (Gaussian/Median)
-        """
+        
         n_images = len(filtered_images) + 1
         fig, axes = plt.subplots(1, n_images, figsize=(4 * n_images, 4))
 
@@ -166,23 +126,19 @@ class ImageFilter:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Visualization saved: {output_path.name}")
+        print(f"   Visualization saved: {output_path.name}")
 
     def save_parameters_table(self):
-        """
-        Save parameters to CSV file
-        """
+        
         df = pd.DataFrame(self.parameters)
         csv_path = Path(__file__).parent / "parameters.csv"
         df.to_csv(csv_path, index=False)
-        print(f"\n✅ Parameters table saved: {csv_path}")
+        print(f"\n Parameters table saved: {csv_path}")
         print(f"\nParameters summary:")
         print(df.to_string(index=False))
 
 def main():
-    """
-    Main function to run filtering experiments
-    """
+    
     print("=" * 70)
     print("MODULE 1: IMAGE FILTERING")
     print("=" * 70)
@@ -191,7 +147,7 @@ def main():
     filter_processor = ImageFilter()
 
     # Load test images
-    print("\n📂 Loading test images...")
+    print("\n Loading test images...")
     images = load_test_images()
 
     # Select mandatory test images
@@ -202,7 +158,7 @@ def main():
     }
 
     # Save original images for reference
-    print("\n💾 Saving original images...")
+    print("\n Saving original images...")
     for name, img in test_images.items():
         output_path = filter_processor.output_dir / f"{name}_original.png"
         save_image(img, str(output_path))
@@ -237,7 +193,7 @@ def main():
     filter_processor.save_parameters_table()
 
     print("\n" + "=" * 70)
-    print("✅ MODULE 1 COMPLETED SUCCESSFULLY!")
+    print(" MODULE 1 COMPLETED SUCCESSFULLY!")
     print("=" * 70)
     print(f"\n📁 All outputs saved in: {filter_processor.output_dir}")
     print("\nGenerated files:")

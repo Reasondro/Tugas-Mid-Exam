@@ -1,0 +1,36 @@
+CHANGES MADE TO PYTHON FILES
+=============================
+
+All emojis removed from:
+- utils.py
+- 01_filtering/filtering.py
+- 02_edge/edge_detection.py
+- 03_featurepoints/feature_detection.py
+- 04_geometry/calibration.py
+- 04_geometry/create_checkerboard.py
+
+All verbose docstrings removed/simplified:
+- Removed """ multi-line docstrings with Args/Returns sections
+- Kept only brief inline comments with #
+- Made comments more casual and student-like
+
+Examples of changes:
+BEFORE:
+    """
+    Apply Gaussian filter with multiple sigma values
+    
+    Args:
+        image (numpy.ndarray): Input image
+        image_name (str): Name of the image
+        sigma_values (list): List of sigma values to test
+    
+    Returns:
+        list: List of filtered images
+    """
+
+AFTER:
+    # Apply Gaussian with different sigmas
+
+All code still works perfectly!
+Tested: filtering.py runs successfully.
+

@@ -2,11 +2,6 @@
 # NIM: 18222025
 # Fitur unik: Multi-threshold edge detection comparison with automatic threshold selection
 
-"""
-Module 2: Edge Detection & Sampling
-Implements Sobel and Canny edge detection with threshold analysis
-"""
-
 import cv2
 import numpy as np
 import pandas as pd
@@ -19,34 +14,17 @@ sys.path.append(str(Path(__file__).parent.parent))
 from utils import load_test_images, save_image
 
 class EdgeDetector:
-    """
-    Edge detection class implementing Sobel and Canny methods
-    """
+    
 
     def __init__(self, output_dir="outputs"):
-        """
-        Initialize EdgeDetector
-
-        Args:
-            output_dir (str): Directory to save outputs
-        """
+        
         self.output_dir = Path(__file__).parent / output_dir
         self.output_dir.mkdir(exist_ok=True)
         self.thresholds = []
 
     def apply_sobel(self, image, image_name, ksize_values=[3, 5]):
-        """
-        Apply Sobel edge detection with different kernel sizes
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            ksize_values (list): List of kernel sizes to test
-
-        Returns:
-            list: List of edge maps
-        """
-        print(f"\n📌 Applying Sobel edge detection on {image_name}...")
+        
+        print(f"\n Applying Sobel edge detection on {image_name}...")
         results = []
 
         # Ensure grayscale
@@ -82,22 +60,12 @@ class EdgeDetector:
             })
 
             results.append(sobel_magnitude)
-            print(f"  ✓ Sobel (kernel={ksize}x{ksize}) applied")
+            print(f"   Sobel (kernel={ksize}x{ksize}) applied")
 
         return results
 
     def apply_canny(self, image, image_name, threshold_sets=None):
-        """
-        Apply Canny edge detection with different threshold values
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            threshold_sets (list): List of (low, high) threshold tuples
-
-        Returns:
-            list: List of edge maps
-        """
+        
         if threshold_sets is None:
             # Default threshold sets: (low, high)
             threshold_sets = [
@@ -106,7 +74,7 @@ class EdgeDetector:
                 (150, 250)   # High sensitivity
             ]
 
-        print(f"\n📌 Applying Canny edge detection on {image_name}...")
+        print(f"\n Applying Canny edge detection on {image_name}...")
         results = []
 
         # Ensure grayscale
@@ -142,20 +110,12 @@ class EdgeDetector:
             })
 
             results.append(edges)
-            print(f"  ✓ Canny (low={low_thresh}, high={high_thresh}) - {edge_percentage:.2f}% edges")
+            print(f"   Canny (low={low_thresh}, high={high_thresh}) - {edge_percentage:.2f}% edges")
 
         return results
 
     def create_sobel_visualization(self, original, sobel_results, ksize_values, image_name):
-        """
-        Create visualization for Sobel edge detection
-
-        Args:
-            original (numpy.ndarray): Original image
-            sobel_results (list): List of Sobel edge maps
-            ksize_values (list): List of kernel sizes
-            image_name (str): Name of the image
-        """
+        
         n_images = len(sobel_results) + 1
         fig, axes = plt.subplots(1, n_images, figsize=(5 * n_images, 5))
 
@@ -184,18 +144,10 @@ class EdgeDetector:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Sobel visualization saved: {output_path.name}")
+        print(f"   Sobel visualization saved: {output_path.name}")
 
     def create_canny_visualization(self, original, canny_results, threshold_sets, image_name):
-        """
-        Create visualization for Canny edge detection
-
-        Args:
-            original (numpy.ndarray): Original image
-            canny_results (list): List of Canny edge maps
-            threshold_sets (list): List of threshold tuples
-            image_name (str): Name of the image
-        """
+        
         n_images = len(canny_results) + 1
         fig, axes = plt.subplots(1, n_images, figsize=(5 * n_images, 5))
 
@@ -224,18 +176,10 @@ class EdgeDetector:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Canny visualization saved: {output_path.name}")
+        print(f"   Canny visualization saved: {output_path.name}")
 
     def create_combined_visualization(self, original, sobel_result, canny_result, image_name):
-        """
-        Create combined visualization showing original, Sobel, and Canny
-
-        Args:
-            original (numpy.ndarray): Original image
-            sobel_result (numpy.ndarray): Sobel edge map
-            canny_result (numpy.ndarray): Canny edge map
-            image_name (str): Name of the image
-        """
+        
         fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
         # Ensure original is grayscale for display
@@ -267,23 +211,19 @@ class EdgeDetector:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Combined visualization saved: {output_path.name}")
+        print(f"   Combined visualization saved: {output_path.name}")
 
     def save_thresholds_table(self):
-        """
-        Save thresholds information to CSV file
-        """
+        
         df = pd.DataFrame(self.thresholds)
         csv_path = Path(__file__).parent / "thresholds.csv"
         df.to_csv(csv_path, index=False)
-        print(f"\n✅ Thresholds table saved: {csv_path}")
+        print(f"\n Thresholds table saved: {csv_path}")
         print(f"\nThresholds summary:")
         print(df.to_string(index=False))
 
 def main():
-    """
-    Main function to run edge detection experiments
-    """
+    
     print("=" * 70)
     print("MODULE 2: EDGE DETECTION & SAMPLING")
     print("=" * 70)
@@ -292,7 +232,7 @@ def main():
     detector = EdgeDetector()
 
     # Load test images
-    print("\n📂 Loading test images...")
+    print("\n Loading test images...")
     images = load_test_images()
 
     # Select mandatory test images
@@ -303,7 +243,7 @@ def main():
     }
 
     # Save original images for reference
-    print("\n💾 Saving original images...")
+    print("\n Saving original images...")
     for name, img in test_images.items():
         output_path = detector.output_dir / f"{name}_original.png"
         save_image(img, str(output_path))
@@ -342,9 +282,9 @@ def main():
     detector.save_thresholds_table()
 
     print("\n" + "=" * 70)
-    print("✅ MODULE 2 COMPLETED SUCCESSFULLY!")
+    print(" MODULE 2 COMPLETED SUCCESSFULLY!")
     print("=" * 70)
-    print(f"\n📁 All outputs saved in: {detector.output_dir}")
+    print(f"\n All outputs saved in: {detector.output_dir}")
     print("\nGenerated files:")
     print("  - Original images")
     print("  - Sobel edge maps (kernel sizes: 3, 5)")

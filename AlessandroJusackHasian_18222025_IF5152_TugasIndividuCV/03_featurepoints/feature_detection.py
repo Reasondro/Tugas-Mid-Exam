@@ -2,11 +2,6 @@
 # NIM: 18222025
 # Fitur unik: Multi-method feature detection with response heatmaps and statistical analysis
 
-"""
-Module 3: Feature/Interest Points Detection
-Implements Harris corner detection and feature point analysis
-"""
-
 import cv2
 import numpy as np
 import pandas as pd
@@ -19,37 +14,17 @@ sys.path.append(str(Path(__file__).parent.parent))
 from utils import load_test_images, save_image
 
 class FeatureDetector:
-    """
-    Feature detection class implementing Harris corner detection
-    """
+    
 
     def __init__(self, output_dir="outputs"):
-        """
-        Initialize FeatureDetector
-
-        Args:
-            output_dir (str): Directory to save outputs
-        """
+        
         self.output_dir = Path(__file__).parent / output_dir
         self.output_dir.mkdir(exist_ok=True)
         self.statistics = []
 
     def harris_corner_detection(self, image, image_name, block_size=2, ksize=3, k=0.04, threshold_percent=0.01):
-        """
-        Apply Harris corner detection
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            block_size (int): Neighborhood size for corner detection
-            ksize (int): Aperture parameter for Sobel derivative
-            k (float): Harris detector free parameter
-            threshold_percent (float): Threshold as percentage of max response
-
-        Returns:
-            tuple: (marked_image, corner_coords, response_map, stats_dict)
-        """
-        print(f"\n📌 Applying Harris corner detection on {image_name}...")
+        
+        print(f"\n Applying Harris corner detection on {image_name}...")
 
         # Ensure grayscale
         if len(image.shape) == 3:
@@ -98,23 +73,14 @@ class FeatureDetector:
             'Min_Response': min_response
         }
 
-        print(f"  ✓ Detected {num_corners} corners")
-        print(f"  ✓ Mean response: {mean_response:.4f}")
-        print(f"  ✓ Max response: {max_response:.4f}")
+        print(f"   Detected {num_corners} corners")
+        print(f"   Mean response: {mean_response:.4f}")
+        print(f"   Max response: {max_response:.4f}")
 
         return marked_image, corner_coords, harris_response, stats
 
     def create_heatmap(self, response_map, image_name):
-        """
-        Create heatmap visualization of corner response
-
-        Args:
-            response_map (numpy.ndarray): Harris response map
-            image_name (str): Name of the image
-
-        Returns:
-            str: Path to saved heatmap
-        """
+        
         plt.figure(figsize=(10, 8))
         plt.imshow(response_map, cmap='hot', interpolation='nearest')
         plt.colorbar(label='Corner Response')
@@ -125,20 +91,11 @@ class FeatureDetector:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Heatmap saved: {output_path.name}")
+        print(f"   Heatmap saved: {output_path.name}")
         return str(output_path)
 
     def create_visualization(self, original, marked, response_map, image_name, stats):
-        """
-        Create comprehensive visualization
-
-        Args:
-            original (numpy.ndarray): Original image
-            marked (numpy.ndarray): Image with marked corners
-            response_map (numpy.ndarray): Harris response map
-            image_name (str): Name of the image
-            stats (dict): Statistics dictionary
-        """
+        
         fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
         # Original image
@@ -167,21 +124,11 @@ class FeatureDetector:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Visualization saved: {output_path.name}")
+        print(f"   Visualization saved: {output_path.name}")
 
     def detect_with_multiple_thresholds(self, image, image_name, thresholds=[0.01, 0.05, 0.1]):
-        """
-        Detect features with multiple threshold values for comparison
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            thresholds (list): List of threshold percentages to test
-
-        Returns:
-            list: List of results for each threshold
-        """
-        print(f"\n📌 Testing multiple thresholds on {image_name}...")
+        
+        print(f"\n Testing multiple thresholds on {image_name}...")
 
         # Ensure grayscale
         if len(image.shape) == 3:
@@ -228,7 +175,7 @@ class FeatureDetector:
                 'marked': marked
             })
 
-            print(f"  ✓ Threshold {thresh_pct}: {num_corners} corners detected")
+            print(f"   Threshold {thresh_pct}: {num_corners} corners detected")
 
         plt.suptitle(f'Threshold Comparison - {image_name}', fontsize=14, fontweight='bold')
         plt.tight_layout()
@@ -237,25 +184,21 @@ class FeatureDetector:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Threshold comparison saved: {output_path.name}")
+        print(f"   Threshold comparison saved: {output_path.name}")
 
         return results
 
     def save_statistics_table(self):
-        """
-        Save statistics to CSV file
-        """
+        
         df = pd.DataFrame(self.statistics)
         csv_path = Path(__file__).parent / "statistics.csv"
         df.to_csv(csv_path, index=False)
-        print(f"\n✅ Statistics table saved: {csv_path}")
+        print(f"\n Statistics table saved: {csv_path}")
         print(f"\nStatistics summary:")
         print(df.to_string(index=False))
 
 def main():
-    """
-    Main function to run feature detection experiments
-    """
+    
     print("=" * 70)
     print("MODULE 3: FEATURE/INTEREST POINTS DETECTION")
     print("=" * 70)
@@ -264,7 +207,7 @@ def main():
     detector = FeatureDetector()
 
     # Load test images
-    print("\n📂 Loading test images...")
+    print("\n Loading test images...")
     images = load_test_images()
 
     # Select mandatory test images
@@ -275,7 +218,7 @@ def main():
     }
 
     # Save original images for reference
-    print("\n💾 Saving original images...")
+    print("\n Saving original images...")
     for name, img in test_images.items():
         output_path = detector.output_dir / f"{name}_original.png"
         save_image(img, str(output_path))
@@ -333,9 +276,9 @@ def main():
     detector.save_statistics_table()
 
     print("\n" + "=" * 70)
-    print("✅ MODULE 3 COMPLETED SUCCESSFULLY!")
+    print(" MODULE 3 COMPLETED SUCCESSFULLY!")
     print("=" * 70)
-    print(f"\n📁 All outputs saved in: {detector.output_dir}")
+    print(f"\n All outputs saved in: {detector.output_dir}")
     print("\nGenerated files:")
     print("  - Original images")
     print("  - Harris corner marked images")

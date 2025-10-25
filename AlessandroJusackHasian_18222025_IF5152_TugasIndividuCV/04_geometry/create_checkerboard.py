@@ -2,23 +2,12 @@
 # NIM: 18222025
 # Fitur unik: Generate proper calibration checkerboard pattern
 
-"""
-Helper script to create a proper checkerboard for camera calibration
-"""
-
 import cv2
 import numpy as np
 from pathlib import Path
 
 def create_checkerboard(pattern_size=(9, 6), square_size=50, output_path="calibration_checkerboard.png"):
-    """
-    Create a checkerboard pattern suitable for camera calibration
-
-    Args:
-        pattern_size (tuple): Number of internal corners (cols, rows)
-        square_size (int): Size of each square in pixels
-        output_path (str): Output file path
-    """
+    
     # Calculate image size (add 2 for border squares)
     width = (pattern_size[0] + 1) * square_size
     height = (pattern_size[1] + 1) * square_size
@@ -41,7 +30,7 @@ def create_checkerboard(pattern_size=(9, 6), square_size=50, output_path="calibr
     full_path = output_dir / output_path
 
     cv2.imwrite(str(full_path), checkerboard)
-    print(f"✓ Checkerboard created: {full_path}")
+    print(f" Checkerboard created: {full_path}")
     print(f"  - Pattern size: {pattern_size}")
     print(f"  - Square size: {square_size}px")
     print(f"  - Image size: {width}x{height}")
@@ -51,4 +40,4 @@ def create_checkerboard(pattern_size=(9, 6), square_size=50, output_path="calibr
 if __name__ == "__main__":
     print("Creating calibration checkerboard...")
     checkerboard = create_checkerboard(pattern_size=(9, 6), square_size=50)
-    print("\n✓ Done!")
+    print("\n Done!")

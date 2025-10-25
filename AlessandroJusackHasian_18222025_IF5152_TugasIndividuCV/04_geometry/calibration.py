@@ -2,11 +2,6 @@
 # NIM: 18222025
 # Fitur unik: Comprehensive camera calibration with homography transformation and reprojection error analysis
 
-"""
-Module 4: Camera Geometry & Calibration
-Implements checkerboard detection, calibration, and geometric transformations
-"""
-
 import cv2
 import numpy as np
 import pandas as pd
@@ -19,34 +14,17 @@ sys.path.append(str(Path(__file__).parent.parent))
 from utils import load_test_images, save_image
 
 class CameraCalibrator:
-    """
-    Camera calibration and geometry transformation class
-    """
+    
 
     def __init__(self, output_dir="outputs"):
-        """
-        Initialize CameraCalibrator
-
-        Args:
-            output_dir (str): Directory to save outputs
-        """
+        
         self.output_dir = Path(__file__).parent / output_dir
         self.output_dir.mkdir(exist_ok=True)
         self.matrices = []
 
     def detect_checkerboard_corners(self, image, image_name, pattern_size=(9, 6)):
-        """
-        Detect checkerboard corners
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-            pattern_size (tuple): Number of internal corners (cols, rows)
-
-        Returns:
-            tuple: (success, corners, marked_image)
-        """
-        print(f"\n📌 Detecting checkerboard corners on {image_name}...")
+        
+        print(f"\n Detecting checkerboard corners on {image_name}...")
 
         # Ensure grayscale
         if len(image.shape) == 3:
@@ -68,26 +46,15 @@ class CameraCalibrator:
             marked_image = color_img.copy()
             cv2.drawChessboardCorners(marked_image, pattern_size, corners_refined, ret)
 
-            print(f"  ✓ Found {len(corners_refined)} corners")
+            print(f"   Found {len(corners_refined)} corners")
             return True, corners_refined, marked_image
         else:
-            print(f"  ✗ Checkerboard pattern not found")
+            print(f"   Checkerboard pattern not found")
             return False, None, color_img
 
     def simple_camera_calibration(self, image, image_name, pattern_size=(9, 6), square_size=1.0):
-        """
-        Perform simple camera calibration using single checkerboard image
-
-        Args:
-            image (numpy.ndarray): Checkerboard image
-            image_name (str): Name of the image
-            pattern_size (tuple): Number of internal corners
-            square_size (float): Size of checkerboard square in arbitrary units
-
-        Returns:
-            tuple: (ret, camera_matrix, dist_coeffs, rvecs, tvecs)
-        """
-        print(f"\n📌 Performing camera calibration on {image_name}...")
+        
+        print(f"\n Performing camera calibration on {image_name}...")
 
         # Ensure grayscale
         if len(image.shape) == 3:
@@ -117,36 +84,27 @@ class CameraCalibrator:
             )
 
             if ret:
-                print(f"  ✓ Calibration successful!")
-                print(f"  ✓ Camera matrix:\n{mtx}")
-                print(f"  ✓ Distortion coefficients: {dist.ravel()}")
+                print(f"   Calibration successful!")
+                print(f"   Camera matrix:\n{mtx}")
+                print(f"   Distortion coefficients: {dist.ravel()}")
 
                 # Calculate reprojection error
                 mean_error = 0
                 imgpoints2, _ = cv2.projectPoints(objp, rvecs[0], tvecs[0], mtx, dist)
                 error = cv2.norm(imgpoints[0], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
-                print(f"  ✓ Reprojection error: {error:.4f}")
+                print(f"   Reprojection error: {error:.4f}")
 
                 return ret, mtx, dist, rvecs, tvecs, error
             else:
-                print(f"  ✗ Calibration failed")
+                print(f"   Calibration failed")
                 return False, None, None, None, None, None
         else:
-            print(f"  ✗ Cannot find checkerboard pattern")
+            print(f"   Cannot find checkerboard pattern")
             return False, None, None, None, None, None
 
     def apply_homography_transformation(self, image, image_name):
-        """
-        Apply homography transformation to simulate perspective change
-
-        Args:
-            image (numpy.ndarray): Input image
-            image_name (str): Name of the image
-
-        Returns:
-            tuple: (transformed_image, homography_matrix)
-        """
-        print(f"\n📌 Applying homography transformation on {image_name}...")
+        
+        print(f"\n Applying homography transformation on {image_name}...")
 
         h, w = image.shape[:2]
 
@@ -174,21 +132,13 @@ class CameraCalibrator:
         # Apply transformation
         transformed = cv2.warpPerspective(image, H, (w, h))
 
-        print(f"  ✓ Homography transformation applied")
-        print(f"  ✓ Homography matrix:\n{H}")
+        print(f"   Homography transformation applied")
+        print(f"   Homography matrix:\n{H}")
 
         return transformed, H
 
     def create_calibration_visualization(self, original, corners_img, undistorted, image_name):
-        """
-        Create calibration visualization
-
-        Args:
-            original (numpy.ndarray): Original image
-            corners_img (numpy.ndarray): Image with detected corners
-            undistorted (numpy.ndarray): Undistorted image
-            image_name (str): Name of the image
-        """
+        
         fig, axes = plt.subplots(1, 3, figsize=(18, 6))
 
         # Original
@@ -219,18 +169,10 @@ class CameraCalibrator:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Calibration visualization saved: {output_path.name}")
+        print(f"   Calibration visualization saved: {output_path.name}")
 
     def create_homography_visualization(self, original, transformed, H, image_name):
-        """
-        Create homography transformation visualization
-
-        Args:
-            original (numpy.ndarray): Original image
-            transformed (numpy.ndarray): Transformed image
-            H (numpy.ndarray): Homography matrix
-            image_name (str): Name of the image
-        """
+        
         fig, axes = plt.subplots(1, 2, figsize=(14, 7))
 
         # Original
@@ -256,23 +198,19 @@ class CameraCalibrator:
         plt.savefig(str(output_path), dpi=150, bbox_inches='tight')
         plt.close()
 
-        print(f"  ✓ Homography visualization saved: {output_path.name}")
+        print(f"   Homography visualization saved: {output_path.name}")
 
     def save_matrices_table(self):
-        """
-        Save transformation matrices to CSV file
-        """
+        
         df = pd.DataFrame(self.matrices)
         csv_path = Path(__file__).parent / "matrices.csv"
         df.to_csv(csv_path, index=False)
-        print(f"\n✅ Matrices table saved: {csv_path}")
+        print(f"\n Matrices table saved: {csv_path}")
         print(f"\nMatrices summary:")
         print(df.to_string(index=False))
 
 def main():
-    """
-    Main function to run camera calibration experiments
-    """
+    
     print("=" * 70)
     print("MODULE 4: CAMERA GEOMETRY & CALIBRATION")
     print("=" * 70)
@@ -281,12 +219,12 @@ def main():
     calibrator = CameraCalibrator()
 
     # Create proper calibration checkerboard first
-    print("\n📐 Creating calibration checkerboard...")
+    print("\n Creating calibration checkerboard...")
     from create_checkerboard import create_checkerboard
     calib_checkerboard = create_checkerboard(pattern_size=(9, 6), square_size=50)
 
     # Load test images
-    print("\n📂 Loading test images...")
+    print("\n Loading test images...")
     images = load_test_images()
 
     # Select test images
@@ -298,7 +236,7 @@ def main():
     }
 
     # Save original images
-    print("\n💾 Saving original images...")
+    print("\n Saving original images...")
     for name, img in test_images.items():
         output_path = calibrator.output_dir / f"{name}_original.png"
         save_image(img, str(output_path))
@@ -395,9 +333,9 @@ def main():
     calibrator.save_matrices_table()
 
     print("\n" + "=" * 70)
-    print("✅ MODULE 4 COMPLETED SUCCESSFULLY!")
+    print(" MODULE 4 COMPLETED SUCCESSFULLY!")
     print("=" * 70)
-    print(f"\n📁 All outputs saved in: {calibrator.output_dir}")
+    print(f"\n All outputs saved in: {calibrator.output_dir}")
     print("\nGenerated files:")
     print("  - Original images")
     print("  - Checkerboard corners detection")
